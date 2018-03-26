@@ -13,9 +13,9 @@ public class DefaultScenario
 {
     public static string ReceiverAddress = "0x31230d2cce102216644c59daE5baed380d84830c";
 
-    public static StanadardTokenDeployment GetDeploymentMessage()
+    public static StandardTokenDeployment GetDeploymentMessage()
     {
-        return new StanadardTokenDeployment()
+        return new StandardTokenDeployment()
         {
             InitialAmount = 10000000,
             TokenName = "TST",
@@ -35,7 +35,7 @@ public class DefaultScenario
 
 }
 ```
-In which we setup the default data for deployment of a standard token smart contract, and a simple message to query the balance of the ownner.
+In which we setup the default data for deployment of a standard token smart contract, and a simple message to query the balance of the owner.
 
 We could create a simple XUnit Theory as follows:
 
@@ -160,4 +160,4 @@ public async Task Transfering_ShouldIncreaseTheBalanceOfReceiver(int valueToSend
 ```
 
 ## Installation requirements.
-There is not a nuget package for this yet, for now the only option is to download the project and use the sample as a reference to get started.
+There is no nuget package for this yet, for now the only option is to download the project and use the sample as a reference to get started.
