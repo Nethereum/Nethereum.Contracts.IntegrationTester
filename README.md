@@ -49,17 +49,17 @@ public async Task AfterDeployment_BalanceOwner_ShouldBeTheSameAsInitialSupply(in
     var contractDeploymentDefault = DefaultScenario.GetDeploymentMessage();
     contractDeploymentDefault.InitialAmount = initialSupply;
 
-    await GivenIDeployContract(contractDeploymentDefault);
+    GivenADeployedContract(contractDeploymentDefault);
 
-    var balanceOfResult = new BalanceOfOutputDTO() { Balance = initialSupply };
+    var balanceOfExpecedResult = new BalanceOfOutputDTO() { Balance = initialSupply };
 
-    await WhenQueryingThen(DefaultScenario.GetBalanceOfOwnerMessage(), balanceOfResult);
+    WhenQueryingThen(DefaultScenario.GetBalanceOfOwnerMessage(), balanceOfExpecedResult);
 }
 ```
 
 We can see here two helper methods:
 
-* **GiveIDeployContract** : This method deploys a contract using the message provided and log the input.
+* **GivenADeployedContract** : This method deploys a contract using the message provided and log the input.
 * **WhenQueryingThen**: This method first makes a contract query and assert the results based on a provided expectation.
 
 ## Xunit Output:
@@ -127,11 +127,11 @@ Another common situation is the testing of Transactions and Events, this example
 [InlineData(300)]
 public async Task Transfering_ShouldIncreaseTheBalanceOfReceiver(int valueToSend)
 {
-    var contractDeploymentDefault = DefaultScenario.GetDeploymentMessage();
-
+  var contractDeploymentDefault = DefaultScenario.GetDeploymentMessage();
+            
     Assert.False(valueToSend > contractDeploymentDefault.InitialAmount, "value to send is bigger than the total supply, please adjust the test data");
 
-    await GivenIDeployContract(contractDeploymentDefault);
+    GivenADeployedContract(contractDeploymentDefault);
 
     var receiver = DefaultScenario.ReceiverAddress;
 
@@ -149,15 +149,24 @@ public async Task Transfering_ShouldIncreaseTheBalanceOfReceiver(int valueToSend
         Value = valueToSend
     };
 
-    await GivenSendTransactionThenEvent(transferMessage, expectedEvent);
+    GivenATransaction(transferMessage).
+                                ThenExpectAnEvent(expectedEvent);
 
-    var queryBalanceReciverMessage = new BalanceOfFunction() {Owner = DefaultScenario.ReceiverAddress};
-    var expectedOutput = new BalanceOfOutputDTO() {Balance = valueToSend};
+    var queryBalanceReceiverMessage = new BalanceOfFunction() {Owner = DefaultScenario.ReceiverAddress};
+    var balanceOfExpectedResult = new BalanceOfOutputDTO() {Balance = valueToSend};
 
-    await WhenQueryingThen(queryBalanceReciverMessage, expectedOutput);
+    WhenQuerying<BalanceOfFunction, BalanceOfOutputDTO>(queryBalanceReceiverMessage)
+                                                          .ThenExpectResult(balanceOfExpectedResult);         
 }
 
 ```
+
+We can see here the extra helper methods:
+
+* **GivenATransaction** : This method sends a transaction.
+* **ThenExpectAnEvent** : This methods validates an event of the same type and result exists
+* **WhenQuerying<BalanceOfFunction, BalanceOfOutputDTO>**: This method makes a call / query to the contract
+* **ThenExpectResult**: This method validates the result of the query / call matches the expected value
 
 ## Installation requirements.
 There is no nuget package for this yet, for now the only option is to download the project and use the sample as a reference to get started.
