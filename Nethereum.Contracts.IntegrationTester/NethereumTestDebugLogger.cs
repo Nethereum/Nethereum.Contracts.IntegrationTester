@@ -28,10 +28,20 @@ namespace Nethereum.Contracts.IntegrationTester
 
         public void LogWhenQueryFunctionThen(ContractMessage contractMessage, object outputDTO)
         {
-            _writer.WriteLine("When Querying Function:");
-            _writer.WriteLine(Stateprinter.PrintObject(contractMessage));
-            _writer.WriteLine("Then the Expected result is:");
+           LogWhenQueryFunction(contractMessage);
+           LogExpectedQueryResult(outputDTO);
+        }
+
+        public void LogExpectedQueryResult(object outputDTO)
+        {
+            _writer.WriteLine("Then the Expected  query result is:");
             _writer.WriteLine(Stateprinter.PrintObject(outputDTO));
+        }
+
+        public void LogWhenQueryFunction(ContractMessage queryFunction)
+        {
+            _writer.WriteLine("When Querying Function:");
+            _writer.WriteLine(Stateprinter.PrintObject(queryFunction));
         }
 
         public void LogGivenSendTransaction(ContractMessage transactionMessage)

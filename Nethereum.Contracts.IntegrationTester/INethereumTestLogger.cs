@@ -9,5 +9,7 @@ namespace Nethereum.Contracts.IntegrationTester
         void LogWhenQueryFunctionThen(ContractMessage contractMessage, object outputDTO);
         void LogGivenSendTransaction(ContractMessage transactionMessage);
         void LogExpectedEvent(object expectedEvent);
+        void LogExpectedQueryResult(object expectedResult);
+        void LogWhenQueryFunction(ContractMessage queryFunction);
     }
 }

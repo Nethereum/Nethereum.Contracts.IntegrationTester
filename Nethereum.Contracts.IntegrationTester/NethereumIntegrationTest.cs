@@ -33,59 +33,70 @@ namespace Nethereum.Contracts.IntegrationTester
             
         }
 
-        protected async Task WhenQueryingThen<TQueryFunction, TOuputDTO>() where TQueryFunction: ContractMessage, new()
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>() where TQueryFunction: ContractMessage, new()
             where TOuputDTO: new()
         {
             var message = new TQueryFunction();
             var expected = new TOuputDTO();
-            await WhenQueryingThen<TQueryFunction, TOuputDTO>(message, expected);
+            return WhenQueryingThen<TQueryFunction, TOuputDTO>(message, expected);
         }
 
 
-        protected async Task WhenQueryingThen<TQueryFunction, TOuputDTO>(TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
             where TOuputDTO : new()
         {
             var queryFunction = new TQueryFunction();
-            await WhenQueryingThen<TQueryFunction, TOuputDTO>(queryFunction, expectedOutput);
+            return WhenQueryingThen<TQueryFunction, TOuputDTO>(queryFunction, expectedOutput);
         }
 
-        protected async Task WhenQueryingThen<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction, TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
+
+        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>() where TQueryFunction : ContractMessage, new()
+            where TOuputDTO : new()
+        {
+            var queryFunction = new TQueryFunction();
+            return WhenQuerying<TQueryFunction,TOuputDTO>(queryFunction);
+        }
+
+        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction) where TQueryFunction : ContractMessage, new()
+            where TOuputDTO : new()
+        {
+            TestLogger.LogWhenQueryFunction(queryFunction);
+            var result = ContractHandler.QueryDeserializingToObjectAsync<TQueryFunction, TOuputDTO>(queryFunction).Result;
+            return new QueryResult<TOuputDTO>(ContractHandler, result, TestLogger, Stateprinter);
+        }
+
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction, TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
             where TOuputDTO : new()
         {
             TestLogger.LogWhenQueryFunctionThen(queryFunction, expectedOutput);
-            var result = await ContractHandler.QueryDeserializingToObjectAsync<TQueryFunction, TOuputDTO>(queryFunction);
+            var result = ContractHandler.QueryDeserializingToObjectAsync<TQueryFunction, TOuputDTO>(queryFunction).Result;
             Stateprinter.Assert.AreEqual(
                 Stateprinter.PrintObject(expectedOutput),
                 Stateprinter.PrintObject(result));
+            return new QueryResult<TOuputDTO>(ContractHandler, result, TestLogger, Stateprinter);
         }
 
-        protected async Task<TransactionReceipt> GivenSendTransaction<TTransactionMessage>(TTransactionMessage transactionMessage) where TTransactionMessage : ContractMessage, new()
+        protected TransactionResult GivenATransaction<TTransactionMessage>(TTransactionMessage transactionMessage) where TTransactionMessage : ContractMessage, new()
         {
             TestLogger.LogGivenSendTransaction(transactionMessage);
-            return await ContractHandler.SendRequestAndWaitForReceiptAsync<TTransactionMessage>(transactionMessage);
+            var transactionReceipt = ContractHandler.SendRequestAndWaitForReceiptAsync<TTransactionMessage>(transactionMessage).Result;
+            return new TransactionResult(ContractHandler, transactionReceipt, TestLogger, Stateprinter);
         }
 
-        protected async Task<TransactionReceipt> GivenSendTransactionThenEvent<TTransactionMessage, TEventDTO>(TTransactionMessage transactionMessage, TEventDTO expectedEvent) where TTransactionMessage : ContractMessage, new()
-            where TEventDTO: new()
-        {
-            var receipt = await GivenSendTransaction(transactionMessage);
-            ThenEventFirst(expectedEvent, receipt);
-            return receipt;
-        }
 
-        protected async Task<TransactionReceipt> GivenIDeployContract<TDeploymentMessage>() where TDeploymentMessage : ContractDeploymentMessage, new()
+        protected TransactionResult GivenADeployedContract<TDeploymentMessage>() where TDeploymentMessage : ContractDeploymentMessage, new()
         {
             var message = new TDeploymentMessage();
-            return await GivenIDeployContract(message);
+            return GivenADeployedContract(message);
         }
 
-        protected async Task<TransactionReceipt> GivenIDeployContract<TDeploymentMessage>(TDeploymentMessage contractDeploymentMessage) where TDeploymentMessage : ContractDeploymentMessage, new()
+        protected TransactionResult GivenADeployedContract<TDeploymentMessage>(TDeploymentMessage contractDeploymentMessage) where TDeploymentMessage : ContractDeploymentMessage, new()
         {
             TestLogger.LogGivenContractDeployment(contractDeploymentMessage);
             var deploymentHadler = Web3.Eth.GetContractDeploymentHandler<TDeploymentMessage>();
-            var receipt = await deploymentHadler.SendRequestAndWaitForReceiptAsync(contractDeploymentMessage);
+            var receipt =  deploymentHadler.SendRequestAndWaitForReceiptAsync(contractDeploymentMessage).Result;
             ContractHandler = Web3.Eth.GetContractHandler(receipt.ContractAddress);
-            return receipt;
+            return new TransactionResult(ContractHandler, receipt, TestLogger, Stateprinter);
         }
 
         protected void ThenEventFirst<TEventDTO>(TEventDTO expectedEvent, TransactionReceipt transactionReceipt) where TEventDTO: new()

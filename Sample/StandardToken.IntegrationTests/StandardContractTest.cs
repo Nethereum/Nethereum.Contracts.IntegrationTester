@@ -26,11 +26,11 @@ namespace StandardToken.IntegrationTests
             var contractDeploymentDefault = DefaultScenario.GetDeploymentMessage();
             contractDeploymentDefault.InitialAmount = initialSupply;
 
-            await GivenIDeployContract(contractDeploymentDefault);
+            GivenADeployedContract(contractDeploymentDefault);
 
-            var balanceOfResult = new BalanceOfOutputDTO() { Balance = initialSupply };
+            var balanceOfExpecedResult = new BalanceOfOutputDTO() { Balance = initialSupply };
 
-            await WhenQueryingThen(DefaultScenario.GetBalanceOfOwnerMessage(), balanceOfResult);
+            WhenQueryingThen(DefaultScenario.GetBalanceOfOwnerMessage(), balanceOfExpecedResult);
         }
 
         [Theory]
@@ -43,7 +43,7 @@ namespace StandardToken.IntegrationTests
             
             Assert.False(valueToSend > contractDeploymentDefault.InitialAmount, "value to send is bigger than the total supply, please adjust the test data");
 
-            await GivenIDeployContract(contractDeploymentDefault);
+            GivenADeployedContract(contractDeploymentDefault);
 
             var receiver = DefaultScenario.ReceiverAddress;
 
@@ -61,12 +61,15 @@ namespace StandardToken.IntegrationTests
                 Value = valueToSend
             };
 
-            await GivenSendTransactionThenEvent(transferMessage, expectedEvent);
+            GivenATransaction(transferMessage).
+                                        ThenExpectAnEvent(expectedEvent);
 
-            var queryBalanceReciverMessage = new BalanceOfFunction() {Owner = DefaultScenario.ReceiverAddress};
-            var expectedOutput = new BalanceOfOutputDTO() {Balance = valueToSend};
+            var queryBalanceReceiverMessage = new BalanceOfFunction() {Owner = DefaultScenario.ReceiverAddress};
+            var balanceOfExpectedResult = new BalanceOfOutputDTO() {Balance = valueToSend};
 
-            await WhenQueryingThen(queryBalanceReciverMessage, expectedOutput);
+            WhenQuerying<BalanceOfFunction, BalanceOfOutputDTO>(queryBalanceReceiverMessage)
+                                                                  .ThenExpectResult(balanceOfExpectedResult);
+           
         }
     }
 }
