@@ -7,7 +7,7 @@ using Nethereum.Contracts.CQS;
 using StandardToken.MyContractName.DTOs;
 namespace StandardToken.MyContractName.CQS
 {
-    [Function("balanceOf", "uint256")]
+    [Function("balanceOf", typeof(BalanceOfOutputDTO))]
     public class BalanceOfFunction:ContractMessage
     {
         [Parameter("address", "_owner", 1)]

@@ -15,17 +15,17 @@ namespace StandardToken.MyContractName.Service
     public class MyContractNameService
     {
     
-        public Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3 web3, MyContractNameDeployment myContractNameDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public Task<TransactionReceipt> DeployContractAndWaitForReceiptAsync(Web3 web3, CQS.StandardTokenDeployment standardTokenDeployment, CancellationTokenSource cancellationTokenSource = null)
         {
-            return web3.Eth.GetContractDeploymentHandler<MyContractNameDeployment>().SendRequestAndWaitForReceiptAsync(myContractNameDeployment, cancellationTokenSource);
+            return web3.Eth.GetContractDeploymentHandler<CQS.StandardTokenDeployment>().SendRequestAndWaitForReceiptAsync(standardTokenDeployment, cancellationTokenSource);
         }
-        public Task<string> DeployContractAsync(Web3 web3, MyContractNameDeployment myContractNameDeployment)
+        public Task<string> DeployContractAsync(Web3 web3, CQS.StandardTokenDeployment standardTokenDeployment)
         {
-            return web3.Eth.GetContractDeploymentHandler<MyContractNameDeployment>().SendRequestAsync(myContractNameDeployment);
+            return web3.Eth.GetContractDeploymentHandler<CQS.StandardTokenDeployment>().SendRequestAsync(standardTokenDeployment);
         }
-        public async Task<MyContractNameService> DeployContractAndGetServiceAsync(Web3 web3, MyContractNameDeployment myContractNameDeployment, CancellationTokenSource cancellationTokenSource = null)
+        public async Task<MyContractNameService> DeployContractAndGetServiceAsync(Web3 web3, CQS.StandardTokenDeployment standardTokenDeployment, CancellationTokenSource cancellationTokenSource = null)
         {
-            var receipt = await DeployContractAndWaitForReceiptAsync(web3, myContractNameDeployment, cancellationTokenSource);
+            var receipt = await DeployContractAndWaitForReceiptAsync(web3, standardTokenDeployment, cancellationTokenSource);
             return new MyContractNameService(web3, receipt.ContractAddress);
         }
     

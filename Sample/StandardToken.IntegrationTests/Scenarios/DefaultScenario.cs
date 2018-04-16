@@ -7,9 +7,9 @@ namespace StandardToken.IntegrationTests.Scenarios
     {
         public static string ReceiverAddress = "0x31230d2cce102216644c59daE5baed380d84830c";
 
-        public static MyContractNameDeployment GetDeploymentMessage()
+        public static MyContractName.CQS.StandardTokenDeployment GetDeploymentMessage()
         {
-            return new MyContractNameDeployment()
+            return new MyContractName.CQS.StandardTokenDeployment()
             {
                 InitialAmount = 10000000,
                 TokenName = "TST",
