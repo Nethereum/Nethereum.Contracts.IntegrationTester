@@ -3,12 +3,29 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Description>Nethereum / Ethereum Smart Contract Integration testing</Description>
+    <Copyright>Juan Blanco</Copyright>
+    <AssemblyTitle>Nethereum.Contracts.IntegrationTester</AssemblyTitle>
+    <Version>1.0.0</Version>
+    <Authors>Juan Blanco</Authors>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <AssemblyName>Nethereum.Contracts.IntegrationTester</AssemblyName>
+    <PackageId>Nethereum.Contracts.IntegrationTester</PackageId>
+    <PackageTags>Netherum;Ethereum;SmartContracts;Testing;Blockchain;Crypto 2.0</PackageTags>
+    <PackageIconUrl>https://raw.githubusercontent.com/Nethereum/Nethereum/master/logos/logo64x64.png</PackageIconUrl>
+    <PackageProjectUrl>http://www.nethereum.com</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Nethereum/Nethereum/master/LICENSE.md</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Nethereum/Nethereum.Contracts.IntegrationTester</RepositoryUrl>
+  </PropertyGroup>
+  
   <ItemGroup>
- 
-    <PackageReference Include="StatePrinter" Version="3.0.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
-    
     <PackageReference Include="Nethereum.Web3" Version="2.*" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
+    <PackageReference Include="StatePrinter.NetStandard.Temp" Version="3.0.311" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
   </ItemGroup>
 </Project>
