@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace StandardToken.MyContractName.DTOs
 {
     [FunctionOutput]
-    public class NameOutputDTO
+    public class NameOutputDTO: IFunctionOutputDTO
     {
         [Parameter("string", "", 1)]
         public string B {get; set;}

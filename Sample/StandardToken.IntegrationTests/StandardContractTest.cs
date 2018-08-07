@@ -8,7 +8,6 @@ using Xunit.Abstractions;
 
 namespace StandardToken.IntegrationTests
 {
-
     public class StandardContractTest: NethereumIntegrationTest
     {
         public StandardContractTest(ITestOutputHelper xunitTestOutputHelper) : base("http://localhost:8545",

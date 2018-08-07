@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
@@ -7,7 +7,7 @@
     <Description>Nethereum / Ethereum Smart Contract Integration testing</Description>
     <Copyright>Juan Blanco</Copyright>
     <AssemblyTitle>Nethereum.Contracts.IntegrationTester</AssemblyTitle>
-    <Version>1.0.0</Version>
+    <Version>2.0.0-rc1</Version>
     <Authors>Juan Blanco</Authors>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>true</IsPackable>
@@ -23,7 +23,7 @@
   
   <ItemGroup>
     <PackageReference Include="xunit" Version="2.3.1" />
-    <PackageReference Include="Nethereum.Web3" Version="2.*" />
+    <PackageReference Include="Nethereum.Web3" Version="3.0.0-rc1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
     <PackageReference Include="StatePrinter.NetStandard.Temp" Version="3.0.311" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />

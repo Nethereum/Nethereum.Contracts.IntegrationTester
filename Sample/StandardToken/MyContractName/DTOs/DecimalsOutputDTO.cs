@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace StandardToken.MyContractName.DTOs
 {
     [FunctionOutput]
-    public class DecimalsOutputDTO
+    public class DecimalsOutputDTO: IFunctionOutputDTO
     {
         [Parameter("uint8", "", 1)]
         public byte B {get; set;}

@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts.ContractHandlers;
 using Nethereum.Contracts.CQS;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Web3.Accounts;
@@ -33,8 +35,8 @@ namespace Nethereum.Contracts.IntegrationTester
             
         }
 
-        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>() where TQueryFunction: ContractMessage, new()
-            where TOuputDTO: new()
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>() where TQueryFunction: FunctionMessage, new()
+            where TOuputDTO: IFunctionOutputDTO, new()
         {
             var message = new TQueryFunction();
             var expected = new TOuputDTO();
@@ -42,31 +44,31 @@ namespace Nethereum.Contracts.IntegrationTester
         }
 
 
-        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
-            where TOuputDTO : new()
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TOuputDTO expectedOutput) where TQueryFunction : FunctionMessage, new()
+            where TOuputDTO : IFunctionOutputDTO, new()
         {
             var queryFunction = new TQueryFunction();
             return WhenQueryingThen<TQueryFunction, TOuputDTO>(queryFunction, expectedOutput);
         }
 
-
-        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>() where TQueryFunction : ContractMessage, new()
-            where TOuputDTO : new()
+        
+        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>() where TQueryFunction : FunctionMessage, new()
+            where TOuputDTO : IFunctionOutputDTO, new()
         {
             var queryFunction = new TQueryFunction();
             return WhenQuerying<TQueryFunction,TOuputDTO>(queryFunction);
         }
 
-        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction) where TQueryFunction : ContractMessage, new()
-            where TOuputDTO : new()
+        protected QueryResult<TOuputDTO> WhenQuerying<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction) where TQueryFunction : FunctionMessage, new()
+            where TOuputDTO : IFunctionOutputDTO, new()
         {
             TestLogger.LogWhenQueryFunction(queryFunction);
             var result = ContractHandler.QueryDeserializingToObjectAsync<TQueryFunction, TOuputDTO>(queryFunction).Result;
             return new QueryResult<TOuputDTO>(ContractHandler, result, TestLogger, Stateprinter);
         }
 
-        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction, TOuputDTO expectedOutput) where TQueryFunction : ContractMessage, new()
-            where TOuputDTO : new()
+        protected QueryResult<TOuputDTO> WhenQueryingThen<TQueryFunction, TOuputDTO>(TQueryFunction queryFunction, TOuputDTO expectedOutput) where TQueryFunction : FunctionMessage, new()
+            where TOuputDTO : IFunctionOutputDTO, new()
         {
             TestLogger.LogWhenQueryFunctionThen(queryFunction, expectedOutput);
             var result = ContractHandler.QueryDeserializingToObjectAsync<TQueryFunction, TOuputDTO>(queryFunction).Result;
@@ -76,7 +78,7 @@ namespace Nethereum.Contracts.IntegrationTester
             return new QueryResult<TOuputDTO>(ContractHandler, result, TestLogger, Stateprinter);
         }
 
-        protected TransactionResult GivenATransaction<TTransactionMessage>(TTransactionMessage transactionMessage) where TTransactionMessage : ContractMessage, new()
+        protected TransactionResult GivenATransaction<TTransactionMessage>(TTransactionMessage transactionMessage) where TTransactionMessage : FunctionMessage, new()
         {
             TestLogger.LogGivenSendTransaction(transactionMessage);
             var transactionReceipt = ContractHandler.SendRequestAndWaitForReceiptAsync<TTransactionMessage>(transactionMessage).Result;
@@ -99,12 +101,12 @@ namespace Nethereum.Contracts.IntegrationTester
             return new TransactionResult(ContractHandler, receipt, TestLogger, Stateprinter);
         }
 
-        protected void ThenEventFirst<TEventDTO>(TEventDTO expectedEvent, TransactionReceipt transactionReceipt) where TEventDTO: new()
+        protected void ThenEventFirst<TEventDTO>(TEventDTO expectedEvent, TransactionReceipt transactionReceipt) where TEventDTO: IEventDTO, new()
         {
             TestLogger.LogExpectedEvent(expectedEvent);
 
             var eventItem = ContractHandler.GetEvent<TEventDTO>();
-            var eventFirst = eventItem.DecodeAllEventsForEvent<TEventDTO>(transactionReceipt.Logs).FirstOrDefault();
+            var eventFirst = eventItem.DecodeAllEventsForEvent(transactionReceipt.Logs).FirstOrDefault();
             Assert.NotNull(eventFirst);
 
             Stateprinter.Assert.AreEqual(

@@ -4,6 +4,8 @@ using System.Numerics;
 using Nethereum.Hex.HexTypes;
 using Nethereum.Contracts.CQS;
 using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts;
+
 namespace StandardToken.MyContractName.CQS
 {
     public class StandardTokenDeployment:ContractDeploymentMessage

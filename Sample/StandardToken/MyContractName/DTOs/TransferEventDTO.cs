@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace StandardToken.MyContractName.DTOs
 {
     [Event("Transfer")]
-    public class TransferEventDTO
+    public class TransferEventDTO: IEventDTO
     {
         [Parameter("address", "_from", 1, true )]
         public string From {get; set;}

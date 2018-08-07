@@ -1,4 +1,5 @@
-﻿using Nethereum.Contracts.CQS;
+﻿using Nethereum.Contracts.ContractHandlers;
+using Nethereum.Contracts.CQS;
 using StatePrinting;
 
 namespace Nethereum.Contracts.IntegrationTester

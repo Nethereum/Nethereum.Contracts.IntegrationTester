@@ -1,4 +1,5 @@
 ﻿using Nethereum.Contracts.CQS;
+using Nethereum.Contracts;
 
 namespace Nethereum.Contracts.IntegrationTester
 {
@@ -6,10 +7,10 @@ namespace Nethereum.Contracts.IntegrationTester
     {
         void LogGivenContractDeployment(ContractDeploymentMessage contractDeploymentMessage);
         void LogContractDeployment(ContractDeploymentMessage contractDeploymentMessage);
-        void LogWhenQueryFunctionThen(ContractMessage contractMessage, object outputDTO);
-        void LogGivenSendTransaction(ContractMessage transactionMessage);
+        void LogWhenQueryFunctionThen(FunctionMessage functionMessage, object outputDTO);
+        void LogGivenSendTransaction(FunctionMessage transactionMessage);
         void LogExpectedEvent(object expectedEvent);
         void LogExpectedQueryResult(object expectedResult);
-        void LogWhenQueryFunction(ContractMessage queryFunction);
+        void LogWhenQueryFunction(FunctionMessage queryFunction);
     }
 }

@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
+    <!--
     <ProjectReference Include="..\..\Nethereum.Contracts.IntegrationTester\Nethereum.Contracts.IntegrationTester.csproj" />
+    -->
     <ProjectReference Include="..\StandardToken\StandardToken.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Nethereum.Contracts.IntegrationTester" Version="2.0.0-rc1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.0-beta.1.build3958" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.6.1" />
   </ItemGroup>

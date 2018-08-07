@@ -1,5 +1,8 @@
 ﻿using System.Linq;
+using Nethereum.ABI.FunctionEncoding.Attributes;
+using Nethereum.Contracts.ContractHandlers;
 using Nethereum.Contracts.CQS;
+using Nethereum.Contracts.Extensions;
 using Nethereum.RPC.Eth.DTOs;
 using StatePrinting;
 using Xunit;
@@ -21,12 +24,13 @@ namespace Nethereum.Contracts.IntegrationTester
             Stateprinter = stateprinter;
         }
 
-        public TransactionResult ThenExpectAnEvent<TEventDTO>(TEventDTO expectedEvent) where TEventDTO : new()
+        public TransactionResult ThenExpectAnEvent<TEventDTO>(TEventDTO expectedEvent) where TEventDTO : IEventDTO, new()
         {
             TestLogger.LogExpectedEvent(expectedEvent);
 
-            var eventItem = ContractHandler.GetEvent<TEventDTO>();
-            var eventFirst = eventItem.DecodeAllEventsForEvent<TEventDTO>(TransactionReceipt.Logs).FirstOrDefault();
+            var events = TransactionReceipt.DecodeAllEvents<TEventDTO>();
+           
+            var eventFirst = events.FirstOrDefault();
             Assert.NotNull(eventFirst);
 
             Stateprinter.Assert.AreEqual(

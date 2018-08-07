@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace StandardToken.MyContractName.DTOs
 {
     [FunctionOutput]
-    public class BalancesOutputDTO
+    public class BalancesOutputDTO: IFunctionOutputDTO
     {
         [Parameter("uint256", "", 1)]
         public BigInteger B {get; set;}

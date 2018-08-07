@@ -7,6 +7,7 @@ using Nethereum.Web3;
 using Nethereum.RPC.Eth.DTOs;
 using Nethereum.Contracts.CQS;
 using System.Threading;
+using Nethereum.Contracts.ContractHandlers;
 using StandardToken.MyContractName.CQS;
 using StandardToken.MyContractName.DTOs;
 namespace StandardToken.MyContractName.Service

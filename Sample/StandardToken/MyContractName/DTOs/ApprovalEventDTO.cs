@@ -6,7 +6,7 @@ using Nethereum.ABI.FunctionEncoding.Attributes;
 namespace StandardToken.MyContractName.DTOs
 {
     [Event("Approval")]
-    public class ApprovalEventDTO
+    public class ApprovalEventDTO: IEventDTO
     {
         [Parameter("address", "_owner", 1, true )]
         public string Owner {get; set;}
